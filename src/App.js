@@ -121,14 +121,18 @@ function App() {
         const updatedRound = { ...r };
         updatedRound[`${team}${field}`] = value;
 
-        // Auto-fill logic
-        if (field === 'Actual' && value !== '') {
-          const otherTeam = team === 'team1' ? 'team2' : 'team1';
+        // Auto-fill / Balancing logic
+        if (field === 'Actual') {
+          // If value is deleted/empty, we don't calculate the other team
+          // allowing the user to clear the board if needed.
+          if (value !== '') {
+            const otherTeam = team === 'team1' ? 'team2' : 'team1';
+            
+            // Calculate what the other team MUST have to match the round total
+            const remainder = roundNum - parseInt(value, 10);
 
-          // Calculation uses roundNum as the total tricks available
-          const remainder = roundNum - parseInt(value, 10);
-
-          if (updatedRound[`${otherTeam}Actual`] === '') {
+            // DIRECTLY update the other team's actual score
+            // We removed the check "if (updatedRound[...] === '')"
             updatedRound[`${otherTeam}Actual`] = remainder >= 0 ? remainder : 0;
           }
         }
@@ -136,7 +140,6 @@ function App() {
       })
     );
   };
-
   const resetGame = () => {
     if (window.confirm("Are you sure you want to start a new game? All scores will be cleared.")) {
       setRounds(createInitialRounds());
