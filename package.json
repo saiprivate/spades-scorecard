@@ -2,6 +2,7 @@
   "name": "spades-scorecard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://saiprivate.github.io/spades-scorecard",
   "dependencies": {
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
